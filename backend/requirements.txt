@@ -3,7 +3,7 @@ bcrypt==3.2.0
 cffi==1.14.6
 cryptography==3.4.7
 Django==3.2.6
-fabric==2.6.0
+Fabric3==1.14.post1
 gunicorn==20.1.0
 invoke==1.6.0
 mysqlclient==2.0.3

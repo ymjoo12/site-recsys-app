@@ -3,7 +3,7 @@
 import os
 import sys
 
-ENV = 'PROD' # 배포 시 'PROD' / 디버깅 시 'DEV'
+ENV = 'DEV' # 배포 시 'PROD' / 디버깅 시 'DEV'
 
 def main():
     env_dict = {'DEV': '.dev', 'PROD': '.prod'}

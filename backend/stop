@@ -1,0 +1,2 @@
+docker stop backend_django
+docker stop backend_nginx

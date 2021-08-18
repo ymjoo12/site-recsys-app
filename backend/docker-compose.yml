@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/django/Dockerfile
+    platform: linux/amd64
     command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - .:/code
@@ -12,6 +13,7 @@ services:
     restart: "on-failure"
   nginx:
     build: ./docker/nginx
+    platform: linux/amd64
     ports:
       - "80:80"
     volumes:

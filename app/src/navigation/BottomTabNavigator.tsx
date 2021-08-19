@@ -20,7 +20,7 @@ import { BottomTabParamList, HomeParamList, HistoryParamList, MyPageParamList } 
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
-export default function BottomTabNavigator() {
+export default function BottomTabNavigator({ navigation }: any) {
   const colorScheme = useColorScheme();
 
   return (

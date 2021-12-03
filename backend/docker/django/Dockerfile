@@ -14,10 +14,10 @@ ENV DJANGO_SRC /code
 RUN mkdir -p $DJANGO_SRC/
 
 # requirement file COPY
-ADD ./requirements.txt $DJANGO_SRC/
+COPY ./requirements.txt $DJANGO_SRC/
 RUN pip install -r $DJANGO_SRC/requirements.txt
 
-ADD ./ $DJANGO_SRC/
+COPY ./ $DJANGO_SRC/
 
 # static volume share
 VOLUME $DJANGO_SRC/static/
@@ -26,4 +26,7 @@ WORKDIR $DJANGO_SRC
 
 EXPOSE 8000
 
-ENTRYPOINT [ "sh", "./docker/django/entry.sh" ]
+# entrypoint
+# COPY ./docker/django/entry.sh /usr/local/bin/
+# RUN ["chmod", "+x", "./docker/django/entry.sh"]
+# ENTRYPOINT [ "sh", "./docker/django/entry.sh" ]

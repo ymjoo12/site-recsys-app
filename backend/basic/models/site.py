@@ -2,8 +2,6 @@ from django.db import models
 
 
 class SiteAnalysis(models.Model):
-    id = models.BigAutoField(help_text="SiteAnalysis ID", primary_key=True)
-
     l_aeq = models.FloatField()
     l_ceq = models.FloatField()
 
@@ -17,7 +15,6 @@ class SiteAnalysis(models.Model):
 
 
 class Site(models.Model):
-    id = models.BigAutoField(help_text="Site ID", primary_key=True)
     site_analysis_id = models.ForeignKey(SiteAnalysis, on_delete=models.CASCADE, null=True)
     
     name = models.CharField(max_length=256)

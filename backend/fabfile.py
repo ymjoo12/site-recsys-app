@@ -14,8 +14,8 @@ REPOSITORIES = {
 
 ECS_DEPLOY_TARGETS = {
     "prod": [
-        {"cluster": "prod-cluster", "service": "service-django"},
-        {"cluster": "prod-cluster", "service": "service-nginx"},
+        {"cluster": "prod-cluster", "service": "server-django"},
+        # {"cluster": "prod-cluster", "service": "service-nginx"},
     ],
 }
 
@@ -46,20 +46,22 @@ def deploy(profile='default', phase='prod'):
     nginx_repo_url = f"{repo_url}{repo_name['nginx']}"
 
     # # 이미지 빌드
-    # local(f"docker-compose build")
-    local(
-        f"docker build . "
-        f"-f docker/django/Dockerfile "
-        f"--tag {django_repo_url}"
-    )
-    local(f"docker tag {django_repo_url}:latest {django_repo_url}:{timestamp}")
+    local(f"docker-compose up -d")
+    # local(
+    #     f"docker build . "
+    #     f"-f docker/django/Dockerfile "
+    #     f"--tag {django_repo_url}"
+    # )
+    # local(f"docker tag {django_repo_url}:latest {django_repo_url}:{timestamp}")
+    local(f"docker tag backend_django:latest {django_repo_url}:{timestamp}")
 
-    local(
-        f"docker build . "
-        f"-f docker/nginx/Dockerfile "
-        f"--tag {nginx_repo_url}"
-    )
-    local(f"docker tag {nginx_repo_url}:latest {nginx_repo_url}:{timestamp}")
+    # local(
+    #     f"docker build . "
+    #     f"-f docker/nginx/Dockerfile "
+    #     f"--tag {nginx_repo_url}"
+    # )
+    # local(f"docker tag {nginx_repo_url}:latest {nginx_repo_url}:{timestamp}")
+    local(f"docker tag nginx:latest {nginx_repo_url}:{timestamp}")
 
     # 이미지를 ECR으로 푸쉬
     local(f"docker push {django_repo_url}:{timestamp}")

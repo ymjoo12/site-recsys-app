@@ -68,7 +68,10 @@ function HomeNavigator() {
       <Stack.Screen
         name={RouteName.Home}
         component={HomeScreen}
-        options={HomeScreen.navigationOptions}
+        options={{
+          headerTitle: 'Home',
+          headerShown: false
+        }}
       />
     </Stack.Navigator>
   );
@@ -92,7 +95,10 @@ function MyPageNavigator() {
       <Stack.Screen
         name={RouteName.MyPage}
         component={MyPageScreen}
-        options={MyPageScreen.navigationOptions}
+        options={{
+          headerTitle: 'MyPage',
+          headerShown: false,
+        }}
       />
     </Stack.Navigator>
   );

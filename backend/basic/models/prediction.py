@@ -5,15 +5,12 @@ from basic.models.site import Site
 
 
 class SiteSurvey(models.Model):
-    id = models.BigAutoField(help_text="Site Survey ID", primary_key=True)
-
     loudness = models.FloatField(help_text="Loudness")
     revisitation = models.FloatField(help_text="Revisitation")
     # TODO: 정확한 자료형 설정 필요
 
 
 class Prediction(models.Model):
-    id = models.BigAutoField(help_text="Prediction ID", primary_key=True)
     site_id = models.ForeignKey(Site, on_delete=models.CASCADE, null=True)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     site_survey_id = models.ForeignKey(SiteSurvey, on_delete=models.CASCADE, null=True)

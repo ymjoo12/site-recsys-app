@@ -39,12 +39,13 @@ const LoginScreen = observer(() => {
             const message = await AuthStore.login(username, password);
             if (message) {
               Alert.alert(message);
+            } else {
+              navigation.goBack();
             }
-            navigation.goBack();
           }}
         />
         <RowButton
-          title="Register"
+          title="Sign Up"
           onPress={() => {
             navigation.navigate(RouteName.Register);
           }}

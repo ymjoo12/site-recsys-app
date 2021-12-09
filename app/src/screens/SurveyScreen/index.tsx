@@ -31,7 +31,7 @@ const SurveyScreen = observer(() => {
     console.log('uploadVideo');
     ProcessStore.setLoudness(loudness+1);
     ProcessStore.setRevisitation(revisitation+1);
-    await ProcessStore.process(await ProcessStore.upload());
+    await ProcessStore.upload();
   };
 
   if (visit === 0) return (
@@ -54,9 +54,10 @@ const SurveyScreen = observer(() => {
         icon={<Entypo name="cross" size={24} color="red" />}
         onPress={() => {
           uploadVideo();
-          Alert.alert("비디오가 업로드 됩니다. History 탭에서 상태를 확인하세요");
+          Alert.alert("비디오가 업로드 됩니다. Result 탭에서 상태를 확인하세요");
           setTimeout(() => {
-            navigation.goBack();
+            // navigation.goBack();
+            navigation.navigate(RouteName.Result);
           }, 1000);
         }}
       />
@@ -78,6 +79,7 @@ const SurveyScreen = observer(() => {
       {
         ['Not at all (전혀)', 'Slightly (약간)', 'Moderately (보통)', 'Very (매우)', 'Extremely (완전히)'].map((item: string, index: number) => (
           <ItemButton
+            key={index}
             title={item}
             onPress={() => setLoudness(index)}
             selected={loudness === index}
@@ -110,6 +112,7 @@ const SurveyScreen = observer(() => {
       {
         ['Never (전혀 아님)', 'Rarely (드물게)', 'Sometimes (때때로, 가끔)', 'Often (자주)', 'Very often (매우 자주)'].map((item: string, index: number) => (
           <ItemButton
+            key={index}
             title={item}
             onPress={() => setRevisitation(index)}
             selected={revisitation === index}
@@ -123,10 +126,10 @@ const SurveyScreen = observer(() => {
           if (revisitation === -1) Alert.alert("항목을 선택해주세요.");
           else {
             uploadVideo();
-            Alert.alert("비디오가 업로드 됩니다. History 탭에서 상태를 확인하세요");
+            Alert.alert("비디오가 업로드 됩니다. Result 탭에서 상태를 확인하세요");
             setTimeout(() => {
               navigation.goBack();
-              navigation.navigate(RouteName.History);
+              navigation.navigate(RouteName.Result);
             }, 1000);
           }
         }}

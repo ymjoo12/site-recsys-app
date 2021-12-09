@@ -31,7 +31,7 @@ const MyPageScreen = observer(() => {
           </>
         ) : (
           <>
-            <Text style={styles.title}>{'Welcome!\n' + AuthStore.userInfo.name}</Text>
+            <Text style={styles.title}>{'Welcome!\n' + AuthStore.userInfo.username}</Text>
             <View style={{ marginTop: 30, backgroundColor: 'transparent' }}>
               <RowButton
                 title="My Profile"
@@ -43,12 +43,12 @@ const MyPageScreen = observer(() => {
               <RowButton
                 title="Help"
                 icon={<Feather name="help-circle" size={24} color="black" />}
-                onPress={() => alert()}
+                onPress={() => alert("준비중인 기능입니다.")}
               />
               <RowButton
                 title="Logout"
                 icon={<MaterialCommunityIcons name="logout" size={24} color="black" />}
-                onPress={action(() => AuthStore.isLogin = false)}
+                onPress={action(() => AuthStore.logout())}
               />
             </View>
           </>

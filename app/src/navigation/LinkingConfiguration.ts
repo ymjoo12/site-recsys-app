@@ -17,9 +17,9 @@ export default {
               HomeScreen: 'Home',
             },
           },
-          History: {
+          Result: {
             screens: {
-              HistoryScreen: 'History',
+              ResultScreen: 'Result',
             },
           },
           MyPage: {

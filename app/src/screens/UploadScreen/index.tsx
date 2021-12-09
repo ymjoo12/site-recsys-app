@@ -100,8 +100,8 @@ const UploadScreen = observer(() => {
         title="Upload & Next"
         icon={<Entypo name="upload-to-cloud" size={24} color="black" />}
         onPress={() => {
-          saveVideo();
-          if (video !== null) {
+          if (video !== null && video.uri !== null) {
+            saveVideo();
             navigation.goBack();
             navigation.navigate(RouteName.Survey);
           } else {

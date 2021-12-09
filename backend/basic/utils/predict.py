@@ -4,12 +4,10 @@ from datetime import datetime, timedelta
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
-from django.utils import timezone
 from rest_framework import viewsets, status
 
 from basic.models.prediction import Prediction
 from basic.models.media import VideoResult
-from basic.utils.result_serializer import result_serializer
 
 import requests
 import json
@@ -39,7 +37,7 @@ def loudness(data):
         'sky_ratio': -0.044,
         'luminance': 0.014,
         'n_ppl': -0.019,
-        'n_vhcl': 0.007,
+        'n_vch': 0.007,
         'grey_ratio': 0.012,
     }
     CONST = -4.686
@@ -51,7 +49,7 @@ def revisitation(data):
         'lceq_aeq': -0.063,
         'sky_ratio': 0.019,
         'n_ppl': 0.012,
-        'n_vhcl': -0.008,
+        'n_vch': -0.008,
         'grey_ratio': -0.023,
     }
     CONST = 3.931
@@ -63,8 +61,8 @@ def predict(data):
         'laeq': 0.051,
         'lceq_aeq': -0.166,
         'green_ratio': 0.058,
-        'n_ppl': -0.031,
-        'n_vhcl': -0.018,
+        'n_ppl': 0.031,
+        'n_vch': -0.018,
         'loudness': -0.57,
         'revisitation': 0.815,
     }
@@ -108,19 +106,19 @@ class ProcessViewSet(viewsets.ViewSet):
         data['lceq_aeq'] = proc_data['audio']['lceq-laeq']
         
         # Image Segmentation TODO: grey ratio 는 이게 맞는지
-        data['sky_ratio'] = proc_data['segment']['Sky']
-        data['green_ratio'] = proc_data['segment']['Green']
+        data['sky_ratio'] = proc_data['segment']['Sky']*100
+        data['green_ratio'] = proc_data['segment']['Green']*100
         # data['grey_ratio'] = proc_data['segment']['Grey']
-        data['grey_ratio'] = 1 - data['sky_ratio'] - data['green_ratio']
+        data['grey_ratio'] = (1 - data['sky_ratio'] - data['green_ratio'])*100
         
         # Counting
         data['n_ppl'] = proc_data['yolo']['person']
-        data['n_vhcl'] = proc_data['yolo']['vehicle']
+        data['n_vch'] = proc_data['yolo']['vehicle']
     
         # Survey Data
-        if video.loudness == 0:
+        if int(video.loudness*100) == 0:
             video.loudness = loudness(data)
-        if video.revisitation == 0:
+        if int(video.revisitation*100) == 0:
             video.revisitation = revisitation(data)
         video.save()
         
@@ -131,55 +129,15 @@ class ProcessViewSet(viewsets.ViewSet):
         video.status = 'processed';
         video.save()
         
-        # results = dict()
-        # results['video_id'] = video.video_id
-        # results['prediction'] = video.prediction
-        # results['revisitation'] = video.revisitation
-        # results['loudness'] = video.loudness
-        # results['video_data'] = proc_data
-        # results['uploaded_at'] = video.created_datetime
-        # results['predicted_at'] = video.updated_datetime
-        
-        results = result_serializer(video)
+        results = dict()
+        results['video_id'] = video.video_id
+        results['prediction'] = video.prediction
+        results['revisitation'] = video.revisitation
+        results['loudness'] = video.loudness
+        results['video_data'] = proc_data
 
-        return Response(results, status=status.HTTP_200_OK)
+        return results
 
-    # @method_decorator(parse_header())
-    # @action(detail=False, methods=['GET'])
-    def list(self, request, *args, **kwargs):
-        """모든 예측 영상 항목을 가져옵니다 TODO: 유저 별 구분 필요"""
-        # clayful_customer_id = None
-        # if request.customer:
-        #     clayful_customer_id = request.customer.clayful_customer_id
-
-        # page_size = int(request.query_params.get('page_size', 50))
-        # keyword = request.query_params.get('keyword', None)
-        
-        # request.query_params.get('redo', False)
-
-        # queryset = VideoResult.objects.filter(
-        #     uploaded_by=request.user
-        # )
-        
-        queryset = VideoResult.objects.filter(
-            created_datetime__gte=datetime.now() - timedelta(hours=12),
-            video__isnull=False
-        )
-        
-        # if keyword:
-        #     keyword = keyword.lower()
-        #     queryset = queryset.filter(search_text__contains=keyword)
-
-        # queryset = queryset.order_by('-created_datetime')
-        # queryset = queryset[:page_size]
-
-        results = []
-        for video in queryset:
-            data = result_serializer(video)
-            results.append(data)
-        results = results[50::-1]
-
-        return Response(results, status=status.HTTP_200_OK)
 
 #  res = dict({
 #         "rgb_info": {

@@ -13,20 +13,25 @@ import AuthStore from '~/stores/AuthStore';
 
 const RegisterScreen = observer(() => {
   const navigation = useNavigation();
+
+  const [name, setName] = React.useState('');
+  const [pw, setPw] = React.useState('');
+  const [pwcfm, setPwcfm] = React.useState('');
+
   return (
     <View style={styles.container}>
       <RowInput
         title="Name"
         icon={<Entypo name="email" size={24} color="black" />}
       />
-      <RowInput
+      {/* <RowInput
         title="E-mail"
         icon={<Entypo name="email" size={24} color="black" />}
       />
       <RowInput
         title="E-mail"
         icon={<Entypo name="email" size={24} color="black" />}
-      />
+      /> */}
       <RowInput
         title="Password"
         isPrivate={true}
@@ -38,7 +43,7 @@ const RegisterScreen = observer(() => {
         icon={<MaterialCommunityIcons name="form-textbox-password" size={24} color="black" />}
       />
         <RowButton
-          title="Register"
+          title="Sign Up"
           onPress={() => {
             action(() => AuthStore.isLogin = true)();
             navigation.goBack();
@@ -68,7 +73,7 @@ const RowItem = ({ title, isEnd = false }: { title: string, isEnd?: boolean }) =
   </>
 )
 
-const RowInput = ({ title, icon = null, isPrivate = false }: { title: string, icon?: any, isPrivate?: boolean }) => (
+const RowInput = ({ title, icon = null, isPrivate = false, value, setValue }: { title: string, icon?: any, isPrivate?: boolean, value: string, setValue: any }) => (
   <View
     style={{
       backgroundColor: 'white',
@@ -95,6 +100,8 @@ const RowInput = ({ title, icon = null, isPrivate = false }: { title: string, ic
       autoCapitalize="none"
       placeholder={title}
       hitSlop={{ top: 30, left: 30, bottom: 30, right: 30 }}
+      value={value}
+      onChangeText={setValue}
     />
     {icon}
   </View>

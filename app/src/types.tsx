@@ -10,7 +10,7 @@ export type RootStackParamList = {
 
 export type BottomTabParamList = {
   Home: undefined;
-  History: undefined;
+  Result: undefined;
   MyPage: undefined;
 };
 
@@ -18,8 +18,8 @@ export type HomeParamList = {
   HomeScreen: undefined;
 };
 
-export type HistoryParamList = {
-  HistoryScreen: undefined;
+export type ResultParamList = {
+  ResultScreen: undefined;
 };
 
 export type MyPageParamList = {

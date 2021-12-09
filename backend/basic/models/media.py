@@ -27,3 +27,5 @@ class VideoResult(TimeStampedModel):
     json_data = models.TextField(default=None, null=True)
     
     prediction = models.FloatField(default=None, null=True)
+    
+    uploaded_by = models.CharField(max_length=64, default='', null=True)

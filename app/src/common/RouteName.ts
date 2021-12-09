@@ -5,13 +5,14 @@ export default {
   NotFound: 'NotFound',
   
   Home: 'Home',
-  History: 'History',
+  Result: 'Result',
   MyPage: 'MyPage',
 
   Login: 'Login',
-  Register: 'Register',
+  Register: 'Sign Up',
   Profile: 'Profile',
 
   Upload: 'Upload',
   Survey: 'Survey',
+  ResultDetail: 'ResultDetail',
 };

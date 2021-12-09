@@ -13,10 +13,10 @@ import useColorScheme from '~/hooks/useColorScheme';
 import { RouteName } from '~/common';
 
 import HomeScreen from '~/screens/HomeScreen';
-import HistoryScreen from '~/screens/HistoryScreen';
+import ResultScreen from '~/screens/ResultScreen';
 import MyPageScreen from '~/screens/MyPageScreen';
 
-import { BottomTabParamList, HomeParamList, HistoryParamList, MyPageParamList } from 'types';
+import { BottomTabParamList, HomeParamList, ResultParamList, MyPageParamList } from 'types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -35,8 +35,8 @@ export default function BottomTabNavigator({ navigation }: any) {
         }}
       />
       <BottomTab.Screen
-        name="History"
-        component={HistoryNavigator}
+        name="Result"
+        component={ResultNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
         }}
@@ -77,13 +77,13 @@ function HomeNavigator() {
   );
 }
 
-function HistoryNavigator() {
+function ResultNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name={RouteName.History}
-        component={HistoryScreen}
-        options={HistoryScreen.navigationOptions}
+        name={RouteName.Result}
+        component={ResultScreen}
+        options={ResultScreen.navigationOptions}
       />
     </Stack.Navigator>
   );

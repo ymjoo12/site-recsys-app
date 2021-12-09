@@ -16,11 +16,15 @@ export type TResult = {
     revisitation?: number;
     loudness?: number;
     video_data?: any;
+    thumbnail? : string;
+    uploaded_at?: string;
+    predicted_at?: string;
     status: TStatus;
 };
 
 export const ProcessStore = observable({
     results: [] as TResult[],
+    result: {} as TResult,
     data: {
         video: {
             uri: '',
@@ -30,6 +34,21 @@ export const ProcessStore = observable({
         revisitation: 0,
         loudness: 0,
     },
+
+    fetchResults: action(async () => {
+        const res = (await Request.get('/process'));
+        console.log(res)
+        ProcessStore.results = res;
+    }),
+    resetResults: action(() => {
+        ProcessStore.results = [];
+        console.log(ProcessStore.results)
+    }),
+
+    fetchResult: action(async (video_id: number) => {
+        const res = (await Request.get('/process/video', { video_id }));
+        ProcessStore.result = res;
+    }),
 
     resetData: action(() => {
         ProcessStore.data = {
@@ -68,10 +87,15 @@ export const ProcessStore = observable({
         formData.append("loudness", ProcessStore.data.loudness);
         const res = (await Request.post('/upload/video', formData));
         const video_id = res.video_id;
+        ProcessStore.resetData();
 
-        ProcessStore.results[index] = { video_id, status: 'uploaded' };
+        ProcessStore.results[index] = { video_id, status: 'uploaded', uploaded_at: res.uploaded_at };
 
         console.log('uploaded');
+
+        ProcessStore.process(index);
+        ProcessStore.fetchResults();
+
         return video_id;
     }),
 
@@ -79,11 +103,12 @@ export const ProcessStore = observable({
         console.log('processing:', index);
 
         const video_id = ProcessStore.results[index].video_id;
-        ProcessStore.results[index].status = 'processing';
-        const res = (await Request.post('/process/video', { video_id }));
+        // ProcessStore.results[index].status = 'processing';
+        const res = (await Request.get('/process/video', { video_id }));
         let result = ProcessStore.results[index];
-        result = { ...res, status: 'done' };
-        ProcessStore.results[index] = result;
+        // result = { ...res, status: 'done' };
+        // ProcessStore.results[index] = result;
+        ProcessStore.fetchResults();
 
         console.log('processed');
     }),

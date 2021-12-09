@@ -10,6 +10,11 @@ import AuthStore from '~/stores/AuthStore';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
+
+  React.useEffect(() => {
+    AuthStore.autoLogin();
+  },[])
+
   return (
     <View style={styles.container}>
       <TileButton
